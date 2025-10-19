@@ -5,7 +5,7 @@ using System.Linq;
 class Program
 {
 
-    public static (string type, int health) GetStats()
+    public static (string type, int health, string region, string attributes) GetStats()
     {
         /// Methods to get stats about Pokemons
         int health;
@@ -13,11 +13,15 @@ class Program
         string? type = Console.ReadLine();
         Console.WriteLine("Enter the health of the Pokemon: ");
         string? healthRaw = Console.ReadLine();
+        Console.WriteLine("Enter the region of the Pokemon: ");
+        string? region = Console.ReadLine();
+        Console.WriteLine("Enter attributes of Pokemon: ");
+        string? attributes = Console.ReadLine();
 
-        if (string.IsNullOrEmpty(type) || string.IsNullOrEmpty(healthRaw)) /// Checking if any input is empty
+        if (string.IsNullOrEmpty(type) || string.IsNullOrEmpty(healthRaw) || string.IsNullOrEmpty(region) || string.IsNullOrEmpty(attributes)) /// Checking if any input is empty
         {
-            Console.WriteLine("Type or health cannot be empty.");
-            return ("error", 0);
+            Console.WriteLine("Type, health, region, and attributes cannot be empty.");
+            return ("error", 0, "unknown", "none");
         }
  
 
@@ -29,7 +33,7 @@ class Program
 
 
 
-        return (type, health);
+        return (type, health, region, attributes);
     }
 
     public static string GetName()
@@ -71,21 +75,23 @@ class Program
             {
                 case 'a':
                     var name = GetName();
-                    var (type, health) = GetStats();
+                    var (type, health, region, attributes) = GetStats();
                     if (type == "error")
                     {
                         break;
                     }
                     if (pokemons.ContainsKey(name))
                     {
-                        Console.WriteLine("This Pokemon alredy exists!");
+                        Console.WriteLine("This Pokemon already exists!");
                         break;
                     }
                     pokemons.Add(
                         name, new Dictionary<string, object>
                             {
                                 {"type", type},
-                                {"health", health}
+                                {"health", health},
+                                {"region", region},
+                                {"attributes", attributes}
                               }
                     );
                     break;
@@ -105,7 +111,12 @@ class Program
                             }
                             else if (currStat.Value is string)
                             {
-                                Console.WriteLine($"\tType: {currStat.Value}");
+                                if (currStat.Key == "type")
+                                    Console.WriteLine($"\tType: {currStat.Value}");
+                                else if (currStat.Key == "region")
+                                    Console.WriteLine($"\tRegion: {currStat.Value}");
+                                else if (currStat.Key == "attributes")
+                                    Console.WriteLine($"\tAttributes: {currStat.Value}");
                             }
                         }
                     }
@@ -125,7 +136,7 @@ class Program
                 case 'e':
                     Console.WriteLine("Enter the name of the existing Pokemon in the dictionary: ");
                     name = GetName();
-                    var (newType, newHealth) = GetStats();
+                    var (newType, newHealth, newRegion, newAttributes) = GetStats();
                     if (newType == "error")
                     {
                         break;
@@ -134,6 +145,8 @@ class Program
                     {
                         pokemons[name]["type"] = newType;
                         pokemons[name]["health"] = newHealth;
+                        pokemons[name]["region"] = newRegion;
+                        pokemons[name]["attributes"] = newAttributes;
                     }
                     break;
                 case 's':
