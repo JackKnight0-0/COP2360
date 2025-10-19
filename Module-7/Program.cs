@@ -28,7 +28,7 @@ class Program
         if (!int.TryParse(healthRaw, out health)) /// Checking if health is a number
         {
             Console.WriteLine("Please, enter the number for the health.");
-            return ("error", 0);
+            return ("error", 0, "unknown", "none");
         }
 
 
