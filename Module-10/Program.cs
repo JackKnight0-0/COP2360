@@ -150,6 +150,7 @@ class Program
         Console.WriteLine("l - Show all subcontractor on the list.");
         Console.WriteLine("r - Remove the subcontractor from the list.");
         Console.WriteLine("c - Calculate the value of the subcontractor pay.");
+        Console.WriteLine("s - Search and display one subcontractor.");
         Console.WriteLine("q - Stop programm.");
     }
 
@@ -227,6 +228,24 @@ class Program
                     }
 
                     NotFound(found, "");
+                    break;
+                case 's':
+                    Console.WriteLine("Enter the name or number of the subcontractor to view:");
+
+                    var (searchKey, searchNum) = GetSearchValues();
+                    bool foundOne = false;
+
+                    foreach (var sc in subcontractors)
+                    {
+                        if (sc.Name.ToLower() == searchKey|| sc.Number == searchNum)
+                        {
+                            sc.PrintInfo();
+                            foundOne = true;
+                            break;
+                        }
+                    }
+
+                    NotFound(foundOne, "");
                     break;
 
             }
